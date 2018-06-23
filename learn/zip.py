@@ -10,6 +10,6 @@ def zipd(ziph):
                     ziph.write(os.path.join(path, file))
 
 s_path = raw_input("Enter the directory: ")
-zipf = ZipFile(s_path + ".zip", 'w', zipfile.ZIP_DEFLATED)
+zipf = ZipFile(s_path + ".zip", 'w')
 zipd(zipf)
 zipf.close()
