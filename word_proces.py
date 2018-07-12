@@ -98,12 +98,14 @@ def check_and_embed_ids_in_paras(xml):
         for key, value in text_token.items():
             for text in bold_tokens:
                 if text == key:
+                    value.append('true')
                     bold_true.append(value)
             for text in italic_tokens:
                 if text == key:
+                    value.append('true')
                     italic_true.append(value)
         if texts:
-            text_dict[para.attrib['id']]['bold'] = [i.append(True) for i in bold_true]
+            text_dict[para.attrib['id']]['bold'] = bold_true
             text_dict[para.attrib['id']]['italic'] = italic_true
     tree.write(xml, encoding='UTF-8', standalone=True, pretty_print=True)
 
