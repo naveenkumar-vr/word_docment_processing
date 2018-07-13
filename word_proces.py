@@ -47,7 +47,6 @@ def check_and_embed_ids_in_paras(xml):
     token_offset = []
     token = []
     for para in tree.iter(PARA):
-        text_token = {}
         if para.attrib.get('id') is None:
             para.attrib['id'] = str(id_number)
             id_number += 1
@@ -56,15 +55,12 @@ def check_and_embed_ids_in_paras(xml):
             para_text = ''.join(texts).strip()
             text_dict[para.attrib['id']] = {}
             text_dict[para.attrib['id']]['text'] = para_text
-            token_offset1 = token_offsets(para_text)
-            token_offset.append(token_offset1)
-            text_dict[para.attrib['id']]['token_offsets'] = token_offset
-            token1 = word_punct_tokenizer.tokenize(para_text)
-            token.append(token1)
-            text_dict[para.attrib['id']]['tokens'] = token
-        for i in range(len(token)):
-            for j in range(len(token[i])):
-                text_token[token[i][j]] = token_offset[i][j]
+            temp_token_offset = token_offsets(para_text)
+            token_offset.append(temp_token_offset)
+            text_dict[para.attrib['id']]['token_offsets'] = temp_token_offset
+            temp_token = word_punct_tokenizer.tokenize(para_text)
+            token.append(temp_token)
+            text_dict[para.attrib['id']]['tokens'] = temp_token
         bold_list = []
         bold_true = []
         italic_list = []
@@ -86,18 +82,23 @@ def check_and_embed_ids_in_paras(xml):
         italic_lists = ''.join(italic_list).strip()
         bold_tokens = word_punct_tokenizer.tokenize(bold_lists)
         italic_tokens = word_punct_tokenizer.tokenize(italic_lists)
-        for key, value in text_token.items():
-            for text in bold_tokens:
-                if text == key:
-                    value.append('true')
-                    bold_true.append(value)
-            for text in italic_tokens:
-                if text == key:
-                    value.append('true')
-                    italic_true.append(value)
+        index_bold_tokenoffset = [j for i in range(len(bold_tokens)) for j in range(len(temp_token)) if bold_tokens[i] == temp_token[j]]
+        index_italic_tokenoffset = [j for i in range(len(italic_tokens)) for j in range(len(temp_token)) if italic_tokens[i] == temp_token[j]]
+        bold_temp_list = [temp_token_offset[i] for i in index_bold_tokenoffset]
+        italic_temp_list = [temp_token_offset[i] for i in index_italic_tokenoffset]
+        for i in bold_temp_list:
+            if 'true' not in i:
+                i.append('true')
+                bold_true.append(i)
+        for i in italic_temp_list:
+            if 'true' not in i:
+                i.append('true')
+                italic_true.append(i)
         if texts:
             text_dict[para.attrib['id']]['bold'] = bold_true
             text_dict[para.attrib['id']]['italic'] = italic_true
+        print bold_true
+        print temp_token_offset
     tree.write(xml, encoding='UTF-8', standalone=True, pretty_print=True)
 
     return text_dict
