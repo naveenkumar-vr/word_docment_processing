@@ -97,8 +97,6 @@ def check_and_embed_ids_in_paras(xml):
         if texts:
             text_dict[para.attrib['id']]['bold'] = bold_true
             text_dict[para.attrib['id']]['italic'] = italic_true
-        print bold_true
-        print temp_token_offset
     tree.write(xml, encoding='UTF-8', standalone=True, pretty_print=True)
 
     return text_dict
