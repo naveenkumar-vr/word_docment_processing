@@ -1,3 +1,8 @@
+import os
+from lxml import etree
+import zipfile
+from zipfile import ZipFile
+from collections import OrderedDict
 from nltk.tokenize import WordPunctTokenizer
 
 WORD_NAMESPACE = '{http://schemas.openxmlformats.org/wordprocessingml/2006/main}'
