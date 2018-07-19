@@ -1,10 +1,4 @@
-import os
-from lxml import etree
-import zipfile
-from zipfile import ZipFile
 from variables_word import *
-from collections import OrderedDict
-from nltk.tokenize import WordPunctTokenizer
 
 class document:
 
@@ -116,7 +110,6 @@ class document:
         bold_style = self.style(BOLD)
         style = self.style(ITALIC)
         return style
-
 
 
 files = raw_input("Enter the file name: ")
