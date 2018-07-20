@@ -70,7 +70,6 @@ class document:
 
         tree = etree.ElementTree(file=self.xml)
         id_number = 0
-        id_number_list = []
         for para in tree.iter(PARA):
             style_text_list = []
             style_tokenoffsets = []
@@ -104,11 +103,62 @@ class document:
         return self.text_dict
 
 
+    def color(self):
+
+        tree = etree.ElementTree(file=self.xml)
+        id_number = 0
+        for para in tree.iter(PARA):
+            color_token_offsets = []
+            texts = [node.text for node in para.iter(TEXT) if node.text]
+            if texts:
+                para_text = ''.join(texts).strip()
+                token_offsets = self.token_offset(text=para_text)
+                tokens = word_punct_tokenizer.tokenize(text=para_text)
+                for run in para.iter(RUN):
+                    for color in run.iter(COLOR):
+                        run_text = [node.text for node in run.iter(TEXT) if node.text != ' ']
+                        if run_text:
+                            value = color.get(VALUE)
+                            hex_color = value.lstrip('#')
+                            rgb_color = list(int(hex_color[i:i+2], 16) for i in (0, 2 ,4))
+                            if color_token_offsets == []:
+                                color_token_offsets = rgb_color
+                for ele in token_offsets:
+                    if color_token_offsets != []:
+                        ele.append(color_token_offsets)
+                self.text_dict[str(id_number)]['color'] = token_offsets
+            id_number += 1
+        return self.text_dict
+
+
+    def size(self):
+
+        tree = etree.ElementTree(file=self.xml)
+        id_number = 0
+        for para in tree.iter(PARA):
+            texts = [node.text for node in para.iter(TEXT) if node.text]
+            size_value = 0
+            if texts:
+                para_text = ''.join(texts).strip()
+                token_offsets = self.token_offset(text=para_text)
+                tokens = word_punct_tokenizer.tokenize(text=para_text)
+                for run in para.iter(RUN):
+                    for size in run.iter(SIZE):
+                        if size_value == 0:
+                            size_value = int(size.get(VALUE))/2
+                for ele in token_offsets:
+                    ele.append(size_value)
+                self.text_dict[str(id_number)]['size'] = token_offsets
+            id_number += 1
+        return self.text_dict
+
 
     def para_dict(self):
+
         self.unzip()
         check_and_embed_ids_in_paras = self.check_and_embed_ids_in_paras()
         bold_style = self.style(BOLD)
         italic_style = self.style(ITALIC)
         style = self.style(UNDERLINE)
-        return style
+        self.color()
+        return self.size()
