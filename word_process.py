@@ -99,6 +99,7 @@ class document:
             if texts:
                 if STYLE == BOLD: self.text_dict[str(id_number)]['bold'] = style_tokenoffsets
                 if STYLE == ITALIC: self.text_dict[str(id_number)]['italic'] = style_tokenoffsets
+                if STYLE == UNDERLINE: self.text_dict[str(id_number)]['underline'] = style_tokenoffsets
             id_number += 1
         return self.text_dict
 
@@ -108,11 +109,6 @@ class document:
         self.unzip()
         check_and_embed_ids_in_paras = self.check_and_embed_ids_in_paras()
         bold_style = self.style(BOLD)
-        style = self.style(ITALIC)
+        italic_style = self.style(ITALIC)
+        style = self.style(UNDERLINE)
         return style
-
-
-files = raw_input("Enter the file name: ")
-path_files = raw_input("Enter the path to file: ")
-text_dict = document(path_file=path_files, file=files)
-print text_dict.para_dict()
