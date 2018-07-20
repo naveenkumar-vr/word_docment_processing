@@ -11,4 +11,5 @@ TEXT = WORD_NAMESPACE + 't'
 BOLD = WORD_NAMESPACE + 'b'
 RUN = WORD_NAMESPACE + 'r'
 ITALIC = WORD_NAMESPACE + 'i'
+UNDERLINE = WORD_NAMESPACE + 'u'
 word_punct_tokenizer = WordPunctTokenizer()
