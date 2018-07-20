@@ -12,4 +12,7 @@ BOLD = WORD_NAMESPACE + 'b'
 RUN = WORD_NAMESPACE + 'r'
 ITALIC = WORD_NAMESPACE + 'i'
 UNDERLINE = WORD_NAMESPACE + 'u'
+COLOR = WORD_NAMESPACE + 'color'
+VALUE = WORD_NAMESPACE + 'val'
+SIZE = WORD_NAMESPACE + 'sz'
 word_punct_tokenizer = WordPunctTokenizer()
