@@ -168,9 +168,6 @@ class document:
         return self.text_dict
 
 
-
-
-
     def para_dict(self):
 
         self.unzip()
