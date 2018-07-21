@@ -141,7 +141,6 @@ class document:
             if texts:
                 para_text = ''.join(texts).strip()
                 token_offsets = self.token_offset(text=para_text)
-                tokens = word_punct_tokenizer.tokenize(text=para_text)
                 for run in para.iter(RUN):
                     for size in run.iter(SIZE):
                         if size_value == 0:
@@ -153,6 +152,25 @@ class document:
         return self.text_dict
 
 
+    def left_indent(self):
+
+        tree = etree.ElementTree(file=self.xml)
+        id_number = 0
+        for para in tree.iter(PARA):
+            texts = [node.text for node in para.iter(TEXT) if node.text]
+            left_indent = 0
+            if texts:
+                for attrib in para.iter(PARA_Pr):
+                    for ind in attrib.iter(INDENT):
+                        left_indent = ind.get(LEFT_IND)
+                self.text_dict[str(id_number)]['left_indent'] = left_indent
+            id_number += 1
+        return self.text_dict
+
+
+
+
+
     def para_dict(self):
 
         self.unzip()
@@ -161,4 +179,5 @@ class document:
         italic_style = self.style(ITALIC)
         style = self.style(UNDERLINE)
         self.color()
-        return self.size()
+        self.size()
+        return self.left_indent()
