@@ -15,4 +15,7 @@ UNDERLINE = WORD_NAMESPACE + 'u'
 COLOR = WORD_NAMESPACE + 'color'
 VALUE = WORD_NAMESPACE + 'val'
 SIZE = WORD_NAMESPACE + 'sz'
+PARA_Pr = WORD_NAMESPACE + 'pPr'
+INDENT = WORD_NAMESPACE + 'ind'
+LEFT_IND = WORD_NAMESPACE + 'left'
 word_punct_tokenizer = WordPunctTokenizer()
